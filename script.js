@@ -64,7 +64,6 @@ function createMouse() {
   }
 
   cellMouse.classList.add('mouse');
-  
 }
 
 createMouse();
@@ -79,11 +78,21 @@ document.body.appendChild(input);
 input.classList.add('result');
 input.value = `Ваши очки: ${score}`;
 
-let inputBtn = document.createElement('input');
-inputBtn.type = 'button';
-inputBtn.value = 'Start';
-inputBtn.classList.add('inputBtn');
-document.body.insertBefore(inputBtn, document.body.firstChild);
+let WrapBtn = document.createElement('div');
+WrapBtn.classList.add('WrapBtn');
+document.body.insertBefore(WrapBtn, document.body.firstChild);
+
+let BtnStart = document.createElement('input');
+BtnStart.type = 'button';
+BtnStart.value = 'Start';
+BtnStart.classList.add('BtnStart');
+WrapBtn.appendChild(BtnStart);
+
+let BtnEnd = document.createElement('input');
+BtnEnd.type = 'button';
+BtnEnd.value = 'Stop';
+BtnEnd.classList.add('BtnEnd');
+WrapBtn.appendChild(BtnEnd);
 
 // Movement cat ("snake")
 function move() {
@@ -145,6 +154,7 @@ function move() {
   if (wholeCatBody[0].classList.contains('catBody')) {
     setTimeout(() => {
       alert(`Игра окончена! Ваши очки: ${score}`);
+      permissionChangeLevel = true;
       setTimeout(() => {
         window.location.reload();
       },0)
@@ -160,14 +170,61 @@ function move() {
   }
 
   steps = true;
-
 }
 
-let interval;
+let interval,
+    level = 300,
+    inputLevel,
+    WrapInputLevel,
+    permissionChangeLevel = true;
 
-inputBtn.addEventListener('click', function() {
-  interval = setInterval(move, 300);
-})
+WrapInputLevel = document.createElement('div');
+WrapInputLevel.classList.add('wrapLevel');
+document.body.insertBefore(WrapInputLevel, document.body.firstChild);
+
+for (let i = 1; i < 4; i++) {
+  inputLevel = document.createElement('input');
+  inputLevel.type = 'button';
+  inputLevel.value = `Уровень ${i}`;
+  inputLevel.setAttribute('level', i);
+  inputLevel.classList.add('level');
+  WrapInputLevel.appendChild(inputLevel);
+}
+
+let wrapLevel = document.getElementsByClassName('wrapLevel');
+
+  wrapLevel[0].addEventListener('click', function(e) {
+    let elem = e.target;
+    let lvl = 300/(elem.getAttribute('level'));
+
+    if (permissionChangeLevel) {
+      level = lvl;
+      for (let i = 0; i < wrapLevel[0].children.length; i++) {
+        if(wrapLevel[0].children[i] != elem) {
+          wrapLevel[0].children[i].classList.remove('selected');
+        }
+      }
+      elem.classList.add('selected');
+
+    } else {
+      console.log("You cannot change the level if the game has already begun.");
+    }
+  })
+
+  function gameLaunch() {
+    interval = setInterval(move, level);
+    permissionChangeLevel = false;
+  }
+
+  function gameStop() {
+    clearInterval(interval);
+    setTimeout(() => {
+        window.location.reload();
+    },0)
+  }
+
+BtnStart.addEventListener('click', gameLaunch);
+BtnEnd.addEventListener('click', gameStop);
 
 window.addEventListener('keydown', function(e) {
   if (steps == true) {
