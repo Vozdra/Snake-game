@@ -41,9 +41,42 @@ body {
   border: none;
   border: 1px solid rgb(87, 101, 110);
 }
-.inputBtn {
-  display: block;
+.BtnStart, .BtnEnd {
   font-size: 30px;
-  margin: auto;
-  margin-bottom: 15px;
+  margin: 10px 5px;
+  background-image: linear-gradient(0deg, #00a8c5, #ffff7e);
+  transition: all .7s ease;
+}
+.BtnEnd {
+  background-image: linear-gradient(0deg, #d74177, #ffe98a);
+  transition: all .7s ease;
+}
+.BtnEnd:hover {
+  background-image: linear-gradient(180deg, #d74177, #ffe98a);
+  transition: all .7s ease;
+}
+.BtnStart:hover {
+  background-image: linear-gradient(180deg, #00a8c5, #ffff7e);
+  transition: all .7s ease;
+}
+.wrapLevel {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.level {
+  font-size: 20px;
+  margin: 0 10px;
+  border: none;
+  border-bottom: 1px solid #000;
+  background-color: #fff;
+  cursor: pointer;
+}
+.level.selected {
+  background-color: rgb(251, 255, 11);
+  border-bottom: 4px solid #000;
+}
+.WrapBtn {
+  display: flex;
+  justify-content: center;
 }
